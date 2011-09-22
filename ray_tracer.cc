@@ -12,7 +12,6 @@
 
 #include "scene_object.h"
 #include "sphere.h"
-//#include "triangle.h"
 
 #include "camera.h"
 #include "eye.h"
@@ -32,21 +31,15 @@ void init_scene(scene *pScene, int xPixels, int yPixels)
 	camera *c = new camera(vec3f(0.0f, 0.0f, -40.0f), vec3f(0.0f, 1.0f, 0.0f), vec3f(0.0f, 0.0f, -1.0f), xPixels, yPixels, 3.0f); 
 	//Define scene objects and lights.
 	point_light *l1 = new point_light(vec3f(0.0f, 0.0f, -100.0f), vec3f(0.1f, 0.1f, 0.1f), vec3f(0.2f, 0.2f, 0.2f), vec3f(0.8f, 0.8f, 0.8f));
-//	directional_light *l2 = new directional_light(vec3f(0.5f, 0.5f, 0.0f), vec3f(0.2f, 0.05f, 0.05f), vec3f(0.4f, 0.1f, 0.1f), vec3f(0.8f, 0.6f, 0.6f));
+	directional_light *l2 = new directional_light(vec3f(0.5f, 0.5f, 0.0f), vec3f(0.2f, 0.05f, 0.05f), vec3f(0.4f, 0.1f, 0.1f), vec3f(0.8f, 0.6f, 0.6f));
 	sphere *s1 = new sphere(vec3f(15.0f, 0.0f, 10.0f), 5.0f, color(vec3f(0.4f, 0.0f, 0.0f), vec3f(0.5f, 0.0f, 0.0f), vec3f(0.8f, 0.8f, 0.8f)), 200.0f);
-	//sphere *s2 = new sphere(vec3f(-10.0f, 0.0f, 0.0f), 5.0f, color(vec3f(0.4f, 0.0f, 0.0f), vec3f(0.5f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f)), 50.0f);
-	//sphere *s3 = new sphere(vec3f(10.0f, 0.0f, 0.0f), 5.0f, color(vec3f(0.4f, 0.0f, 0.0f), vec3f(0.5f, 0.0f, 0.0f), vec3f(1.0f, 1.0f, 1.0f)), 50.0f);
-//	sphere *s4 = new sphere(vec3f(0.0f, 10.0f, 0.0f), 5.0f,	color(vec3f(0.0f, 0.4f, 0.0f), vec3f(0.0f, 0.6, 0.0f), vec3f(0.8f, 0.8f, 0.8f)), 50.0f);
-	sphere *s5 = new sphere(vec3f(0.0f, 0.0f, 0.0f), 5.0f,	color(vec3f(0.0f, 0.0f, 0.4f), vec3f(0.0f, 0.0, 0.6f), vec3f(0.3f, 0.3f, 0.3f)), 500.0f);
+	sphere *s2 = new sphere(vec3f(0.0f, 0.0f, 0.0f), 5.0f,	color(vec3f(0.0f, 0.0f, 0.4f), vec3f(0.0f, 0.0, 0.6f), vec3f(0.3f, 0.3f, 0.3f)), 500.0f);
 	//Add to scene;
 	pScene->setCamera(c);
 	pScene->addLight(l1);
-	//pScene->addLight(l2);
+	pScene->addLight(l2);
 	pScene->addSceneObject(s1);
-	//pScene->addSceneObject(s2);
-	//pScene->addSceneObject(s3);
-	//pScene->addSceneObject(s4);
-	pScene->addSceneObject(s5);
+	pScene->addSceneObject(s2);
 }
 
 int main(int argc, char **argv)
@@ -55,6 +48,7 @@ int main(int argc, char **argv)
 	int xPixels = 500, yPixels = 500;
 	init_scene(s, xPixels, yPixels);
 	ppmfile.open("output.ppm");
+	//Write the ppm header.
 	ppmfile << "P3" << std::endl << xPixels << " " << yPixels << std::endl << 255 << std::endl;
 	ray_trace(xPixels, yPixels, s, trace_pixel_std, 1);
 	delete s;
